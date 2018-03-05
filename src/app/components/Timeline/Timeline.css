@@ -18,10 +18,12 @@
 .react-calendar-timeline .rct-sidebar .rct-sidebar-row.rct-sidebar-row-even
 {
     background: #FFFFFF;
+    font-size: 16px;
 }
 
 .react-calendar-timeline .rct-sidebar .rct-sidebar-row.rct-sidebar-row-odd{
     background: #EEE;
+    font-size: 16px;
 }
 
 .react-calendar-timeline .rct-horizontal-lines .rct-hl-odd{
