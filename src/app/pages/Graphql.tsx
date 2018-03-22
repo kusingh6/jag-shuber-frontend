@@ -109,6 +109,7 @@ export default withSheriffs(({ data }) => {
                     }
                 </tbody>
             </Table>
+            <h1> READ ONLY </h1>
             <Table>
                 <tbody>
                     {sheriffs.map(s => (

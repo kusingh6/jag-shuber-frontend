@@ -64,7 +64,8 @@
     "test": "node scripts/test.js --env=jsdom",
     "prepare": "patch-package",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "start-graphql": "postgraphile -c postgres://shersched:ooPCATETLVlQjpfP@postgres-dev.192.168.99.100.nip.io:30105/appdb --schema shersched -o"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^3.3.10",
