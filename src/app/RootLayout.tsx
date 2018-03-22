@@ -15,6 +15,7 @@ import Timeline from './pages/Timeline';
 import ManageSheriffs from './pages/ManageSheriffs';
 import DefaultAssignments from './pages/DefaultAssignments';
 import Scheduling from './pages/Scheduling';
+import Graphql from './pages/Graphql';
 
 class Layout extends React.PureComponent {
   render() {
@@ -29,6 +30,7 @@ class Layout extends React.PureComponent {
             <Route path='/sheriffs/manage' component={ManageSheriffs} />
             <Route path='/assignments/manage/default' component={DefaultAssignments} />
             <Route path='/sheriffs/schedule' component={Scheduling} />
+            <Route path='/graphql' component={Graphql} />
           </div>
           <div className='footerArea'>
             <Footer />

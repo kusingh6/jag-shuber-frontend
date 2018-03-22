@@ -21,7 +21,7 @@ export default class Navigation extends React.Component<NavigationProps, any>{
                     <img className="visible-xs" src="/img/bc_logo_transparent-dark.png" />
                 </span>
                               
-                <Navbar  staticTop fluid style={{borderRadius:4}}>
+                <Navbar staticTop fluid style={{borderRadius:4}}>
                     <Navbar.Header color="#003366">
                         <NavbarBrand color="#003366">
                             Sheriff Scheduling System
@@ -32,6 +32,7 @@ export default class Navigation extends React.Component<NavigationProps, any>{
                         <NavigationLink to="/assignments/manage/default" label="Default Assignments" /> 
                         <NavigationLink to="/sheriffs/manage" label="Sheriffs" /> 
                         <NavigationLink to="/sheriffs/schedule" label="Schedule" />  
+                        <NavigationLink to="/graphql" label="GraphQL Tests" />  
                     </Nav>
                 </Navbar>
                 
