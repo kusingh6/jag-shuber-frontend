@@ -21,7 +21,7 @@ export interface SheriffDutyBarProps {
     isExtra?: boolean;
     showBorder?: boolean;
     onRemove?: () => void;
-    canDropSheriff?: (sheriff: Sheriff) => boolean;
+    canDropSheriff?: (sheriff: Sheriff, sheriffDutyToAssign: SheriffDuty) => boolean;
     onDropSheriff?: (sheriff: Sheriff, sheriffDuty: SheriffDuty) => void;
 }
 
@@ -73,8 +73,8 @@ export default class SheriffDutyBar extends React.PureComponent<SheriffDutyBarPr
         return '0%';
     }
 
-    private canAssignSheriff(sheriff: Sheriff): boolean {
-        const { duty: {sheriffDuties = []}, sheriffDuty: sheriffDutyToAssign  } = this.props;
+    private canAssignSheriff(sheriff: Sheriff, sheriffDutyToAssign: SheriffDuty): boolean {
+        const { duty: {sheriffDuties = []} } = this.props;
         const sdToAssignStartTime = moment(sheriffDutyToAssign.startDateTime).toISOString();
         const sdToAssignEndTime = moment(sheriffDutyToAssign.endDateTime).toISOString();
         
@@ -95,7 +95,7 @@ export default class SheriffDutyBar extends React.PureComponent<SheriffDutyBarPr
             sheriffDuty,
             showBorder = true,
             dutyWorkSection = 'OTHER',
-            canDropSheriff = (s: Sheriff) => this.canAssignSheriff(s),
+            canDropSheriff = (s: Sheriff, d: SheriffDuty) => this.canAssignSheriff(s, d),
             onDropSheriff,
         } = this.props;
         const isAssigned = sheriffId !== undefined && sheriffId !== '';
@@ -104,7 +104,7 @@ export default class SheriffDutyBar extends React.PureComponent<SheriffDutyBarPr
         return (
             <SheriffDropTarget
                 onDropItem={(s) => onDropSheriff && onDropSheriff(s, sheriffDuty)}
-                canDropItem={canDropSheriff}
+                canDropItem={(s) => canDropSheriff(s, sheriffDuty)}
                 className="sheriff-duty-bar"
                 style={{
                     borderBottomWidth: showBorder ? 1 : 0,
