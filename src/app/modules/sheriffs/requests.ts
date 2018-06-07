@@ -10,6 +10,7 @@ import {
     Sheriff
 } from '../../api/index';
 import { SheriffProfile } from '../../api/Api';
+import { LeaveModuleState } from '../leaves/common';
 
 // Sheriff Map
 class SheriffMapRequest extends RequestAction<void, SheriffMap, SheriffModuleState> {
@@ -63,7 +64,9 @@ class CreateSheriffRequest extends RequestAction<Partial<Sheriff>, Sheriff, Sher
 
 export const createSheriffRequest = new CreateSheriffRequest();
 
-class CreateSheriffProfileRequest extends RequestAction<Partial<SheriffProfile>, SheriffProfile, SheriffModuleState> {
+class CreateSheriffProfileRequest extends 
+    RequestAction<Partial<SheriffProfile>, SheriffProfile, SheriffModuleState & LeaveModuleState> {
+    
     constructor(namespace: string = STATE_KEY, actionName: string = 'createSheriffProfile') {
         super(namespace, actionName);
     }
@@ -73,30 +76,42 @@ class CreateSheriffProfileRequest extends RequestAction<Partial<SheriffProfile>,
     }
 
     // tslint:disable-next-line:max-line-length
-    reduceSuccess(moduleState: SheriffModuleState, action: { type: string, payload: SheriffProfile }): SheriffModuleState {
+    reduceSuccess(moduleState: SheriffModuleState & LeaveModuleState, action: { type: string, payload: SheriffProfile }): SheriffModuleState {
         // Call the super's reduce success and pull out our state and
         // the sheriffMap state
         const {
             sheriffMap: {
-                data: currentMap = {},
-                ...restMap
+                data: currentSheriffMap = {},
+                ...restSheriffMap
+            } = {},
+            leaveMap: {
+                data: currentLeaveMap = {},
+                ...restLeaveMap
             } = {},
             ...restState
         } = super.reduceSuccess(moduleState, action);
 
         // Create a new map and add our sheriff to it
-        const newMap = { ...currentMap };
-        newMap[action.payload.sheriff.id] = action.payload.sheriff;
+        const newSheriffMap = { ...currentSheriffMap };
+        newSheriffMap[action.payload.sheriff.id] = action.payload.sheriff;
+
+        // Create a new map and add the leave to it
+        const newLeaveMap = { ...currentLeaveMap };
+        const newLeaves = action.payload.leaves || [];
+        newLeaves.forEach(nl => newLeaveMap[nl.id] = nl);
 
         // Merge the state back together with the original in a new object
-        const newState: Partial<SheriffModuleState> = {
+        const newState: Partial<SheriffModuleState & LeaveModuleState> = {
             ...restState,
             sheriffMap: {
-                ...restMap,
-                data: newMap
+                ...restSheriffMap,
+                data: newSheriffMap
+            },
+            leaveMap: {
+                ...restLeaveMap,
+                data: newLeaveMap
             }
         };
-        //add leave map stuff!
         return newState;
     }
 }
@@ -111,7 +126,7 @@ class UpdateSheriffProfileRequest extends CreateSheriffProfileRequest {
         let updatedSheriffProfile = await api.updateSheriffProfile(sheriffProfileToUpdate);
         return updatedSheriffProfile;
     }
-    
+
     // tslint:disable-next-line:max-line-length
     reduceSuccess(moduleState: SheriffModuleState, action: { type: string, payload: SheriffProfile }): SheriffModuleState {
         // Call the super's reduce success and pull out our state and
@@ -151,7 +166,7 @@ class UpdateSheriffRequest extends CreateSheriffRequest {
         let newSheriff = await api.updateSheriff(sheriff);
         return newSheriff;
     }
-    
+
     reduceSuccess(moduleState: SheriffModuleState, action: { type: string, payload: Sheriff }): SheriffModuleState {
         // Call the super's reduce success and pull out our state and
         // the sheriffMap state
