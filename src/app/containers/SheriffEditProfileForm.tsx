@@ -14,7 +14,7 @@ import {
 import { connect } from 'react-redux';
 import { RootState } from '../store';
 import { getSheriff } from '../modules/sheriffs/selectors';
-// import { updateSheriff } from '../modules/sheriffs/actions';
+import { updateSheriffProfile } from '../modules/sheriffs/actions';
 import {
     IdType,
 } from '../api';
@@ -23,7 +23,8 @@ import {
 const formConfig: ConfigProps<any, SheriffProfileFormProps> = {
     form: 'EditSherif',
     onSubmit: (values, dispatch, props) => {
-        //const updatedSheriff = SheriffProfileForm.parseSheriffFromValues(values);
+        const updatedSheriffProfile = SheriffProfileForm.parseSheriffProfileFromValues(values);
+        dispatch(updateSheriffProfile(updatedSheriffProfile));
         //dispatch(updateSheriff(updatedSheriff));
         // dispatch update sheriff leaves
     }
@@ -37,8 +38,7 @@ const mapStateToProps = (state: RootState, props: SheriffEditProfileFormProps) =
     const initialSheriff = getSheriff(props.id)(state);
     if (initialSheriff) {
         return {
-            // initialValues: AssignmentForm.assignmentToFormValues(initialAssignment),
-            initialValues: initialSheriff,
+            initialValues: SheriffProfileForm.sheriffProfileToFormValues({sheriff: initialSheriff, leaves: []}),
             isNewSheriff: false
         };
     } else {

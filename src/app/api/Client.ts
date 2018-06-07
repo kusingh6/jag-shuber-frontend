@@ -75,7 +75,7 @@ class ShuberApiClient extends ShuberApi.Client {
 }
 
 export default class Client implements API {
-    
+
     private _client: ShuberApi.Client;
     private _courthouseId: string;
     private _mockApi: MockApi;
@@ -106,16 +106,6 @@ export default class Client implements API {
         return sheriffList;
     }
 
-     async createSheriffProfile(newSheriffProfile: SheriffProfile): Promise<SheriffProfile> {
-        const {sheriff} = newSheriffProfile;
-        const newSheriff = await this.createSheriff(sheriff);
-        return {sheriff: newSheriff, leaves: []};
-        // const newLeaves = Promise.all(
-        //         leaves.map(l => ({...l, sheriffId: newSheriff.id}))
-        //         .map(leave => this._client.createLeave(leave) as Promise<Leave>));
-
-    }
-
     async createSheriff(newSheriff: Sheriff): Promise<Sheriff> {
         const {
             homeCourthouseId = this.currentCourthouse,
@@ -128,12 +118,29 @@ export default class Client implements API {
         });
         return sheriff as Sheriff;
     }
+
     async updateSheriff(sheriffToUpdate: Partial<Sheriff>): Promise<Sheriff> {
         const { id } = sheriffToUpdate;
         if (!id) {
             throw 'Sheriff to Update has no id';
         }
         return await this._client.UpdateSheriff(id, sheriffToUpdate) as Sheriff;
+    }
+
+    async createSheriffProfile(newSheriffProfile: SheriffProfile): Promise<SheriffProfile> {
+        const { sheriff } = newSheriffProfile;
+        const newSheriff = await this.createSheriff(sheriff);
+        return { sheriff: newSheriff, leaves: [] };
+        // const newLeaves = Promise.all(
+        //         leaves.map(l => ({...l, sheriffId: newSheriff.id}))
+        //         .map(leave => this._client.createLeave(leave) as Promise<Leave>));
+
+    }
+
+    async updateSheriffProfile(sheriffProfileToUpdate: SheriffProfile): Promise<SheriffProfile> {
+        const { sheriff } = sheriffProfileToUpdate;
+        const updatedSheriff = await this.updateSheriff(sheriff);
+        return { sheriff: updatedSheriff, leaves: [] };
     }
 
     async getAssignments(dateRange: DateRange = {}): Promise<(CourtAssignment | JailAssignment | EscortAssignment | OtherAssignment)[]> {
@@ -268,7 +275,7 @@ export default class Client implements API {
     }
 
     async copyShifts(shiftCopyDetails: ShiftCopyOptions): Promise<Shift[]> {
-        const {startOfWeekDestination, startOfWeekSource, shouldIncludeSheriffs} = shiftCopyDetails;
+        const { startOfWeekDestination, startOfWeekSource, shouldIncludeSheriffs } = shiftCopyDetails;
         return await this._client.CopyShifts({
             startOfWeekDestination: moment(startOfWeekDestination).toISOString(),
             startOfWeekSource: moment(startOfWeekSource).toISOString(),

@@ -122,8 +122,6 @@ export const DEFAULT_RECURRENCE: DutyRecurrence[] = [
 export interface SheriffProfile {
     sheriff: Sheriff;
     leaves?: Leave[];
-    // training: Training[];
-    // equipment: Equipment[];
 }
 export interface Sheriff {
     id: IdType;
@@ -285,7 +283,8 @@ export interface API {
     getSheriffs(): Promise<Sheriff[]>;
     createSheriff(newSheriff: Sheriff): Promise<Sheriff>;
     updateSheriff(sheriffToUpdate: Partial<Sheriff>): Promise<Sheriff>;
-    createSheriffProfile(newSheriffProfile: SheriffProfile): Promise<SheriffProfile>;
+    createSheriffProfile(newSheriffProfile: Partial<SheriffProfile>): Promise<SheriffProfile>;
+    updateSheriffProfile(sheriffProfileToUpdate: SheriffProfile): Promise<SheriffProfile>;
 
     // Assignments
     getAssignments(dateRange: DateRange): Promise<Assignment[]>;
