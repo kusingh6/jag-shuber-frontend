@@ -24,7 +24,8 @@ import {
     WorkSectionCode,
     ShiftUpdates,
     SheriffRank,
-    DateRange
+    DateRange,
+    SheriffProfile
 } from './Api';
 import MockApi from './Mock/MockApi';
 import { SubmissionError } from 'redux-form';
@@ -74,6 +75,7 @@ class ShuberApiClient extends ShuberApi.Client {
 }
 
 export default class Client implements API {
+    
     private _client: ShuberApi.Client;
     private _courthouseId: string;
     private _mockApi: MockApi;
@@ -103,6 +105,17 @@ export default class Client implements API {
         const sheriffList = (await this._client.GetSheriffs(this.currentCourthouse) as Sheriff[]);
         return sheriffList;
     }
+
+     async createSheriffProfile(newSheriffProfile: SheriffProfile): Promise<SheriffProfile> {
+        const {sheriff} = newSheriffProfile;
+        const newSheriff = await this.createSheriff(sheriff);
+        return {sheriff: newSheriff, leaves: []};
+        // const newLeaves = Promise.all(
+        //         leaves.map(l => ({...l, sheriffId: newSheriff.id}))
+        //         .map(leave => this._client.createLeave(leave) as Promise<Leave>));
+
+    }
+
     async createSheriff(newSheriff: Sheriff): Promise<Sheriff> {
         const {
             homeCourthouseId = this.currentCourthouse,

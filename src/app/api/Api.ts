@@ -119,6 +119,12 @@ export const DEFAULT_RECURRENCE: DutyRecurrence[] = [
     }
 ];
 
+export interface SheriffProfile {
+    sheriff: Sheriff;
+    leaves?: Leave[];
+    // training: Training[];
+    // equipment: Equipment[];
+}
 export interface Sheriff {
     id: IdType;
     firstName: string;
@@ -245,12 +251,21 @@ export interface ShiftCopyOptions {
 export interface Leave {
     id: IdType;
     sheriffId: IdType;
-    leaveTypeCode?: string;
+    leaveTypeCode: string;
     startDate: DateType;
     endDate: DateType;
     cancelDate?: DateType;
     cancelReasonCode?: string;
-    
+}
+
+export interface LeaveTypeCode {
+    code: string;
+    description: string;
+}
+
+export interface LeaveCancelCode {
+    code: string;
+    description: string;
 }
 
 export interface Run {
@@ -270,6 +285,7 @@ export interface API {
     getSheriffs(): Promise<Sheriff[]>;
     createSheriff(newSheriff: Sheriff): Promise<Sheriff>;
     updateSheriff(sheriffToUpdate: Partial<Sheriff>): Promise<Sheriff>;
+    createSheriffProfile(newSheriffProfile: SheriffProfile): Promise<SheriffProfile>;
 
     // Assignments
     getAssignments(dateRange: DateRange): Promise<Assignment[]>;

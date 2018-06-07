@@ -11,7 +11,7 @@ import {
     EscortAssignment,
     OtherAssignment,
     Shift,
-    Leave,
+    // Leave,
     AssignmentDutyDetails
 } from '../Api';
 import * as moment from 'moment';
@@ -1051,19 +1051,19 @@ export const sheriffShifts: Shift[] = [
 
 ];
 
-export const sheriffLeaves: Leave[] = [
-    {
-        id: '1',
-        sheriffId: '1',
-        startDate: moment().startOf('week').add(1, 'day'),
-        endDate: moment().startOf('week').add(4, 'day')
-    },
-    {
-        id: '2',
-        sheriffId: '2',
-        startDate: moment().startOf('week').add(1, 'day'),
-        endDate: moment().startOf('week').add(4, 'day')
-    }
-];
+// export const sheriffLeaves: Leave[] = [
+//     {
+//         id: '1',
+//         sheriffId: '1',
+//         startDate: moment().startOf('week').add(1, 'day'),
+//         endDate: moment().startOf('week').add(4, 'day')
+//     },
+//     {
+//         id: '2',
+//         sheriffId: '2',
+//         startDate: moment().startOf('week').add(1, 'day'),
+//         endDate: moment().startOf('week').add(4, 'day')
+//     }
+// ];
 
 export const assignmentDutyDetails: AssignmentDutyDetails[] = [];
