@@ -1,17 +1,17 @@
-import RequestAction from '../../../infrastructure/RequestAction';
-import { ThunkExtra } from '../../../store';
-import arrayToMap from '../../../infrastructure/arrayToMap';
+import RequestAction from '../../infrastructure/RequestAction';
+import { ThunkExtra } from '../../store';
+import arrayToMap from '../../infrastructure/arrayToMap';
 import {
     STATE_KEY,
     ShiftModuleState
-} from '../common';
+} from './common';
 import {
     Shift,
     IdType,
     ShiftMap,
     ShiftCopyOptions,
     ShiftUpdates
-} from '../../../api/Api';
+} from '../../api/Api';
 
 // Get the Map
 class ShiftMapRequest extends RequestAction<void, ShiftMap, ShiftModuleState> {

@@ -1,16 +1,16 @@
-import RequestAction from '../../../infrastructure/RequestAction';
-import { ThunkExtra } from '../../../store';
-import arrayToMap from '../../../infrastructure/arrayToMap';
+import RequestAction from '../../infrastructure/RequestAction';
+import { ThunkExtra } from '../../store';
+import arrayToMap from '../../infrastructure/arrayToMap';
 import {
     STATE_KEY,
-    ShiftModuleState
-} from '../common';
+    LeaveModuleState
+} from './common';
 import {
     LeaveMap
-} from '../../../api/Api';
+} from '../../api/Api';
 
 // Get the Map
-class LeaveMapRequest extends RequestAction<void, LeaveMap, ShiftModuleState> {
+class LeaveMapRequest extends RequestAction<void, LeaveMap, LeaveModuleState> {
     constructor(namespace: string = STATE_KEY, actionName: string = 'leaveMap') {
         super(namespace, actionName);
     }
