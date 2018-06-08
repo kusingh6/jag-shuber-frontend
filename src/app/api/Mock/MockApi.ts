@@ -21,7 +21,9 @@ import {
     ShiftUpdates,
     SheriffRank,
     Leave,
-    SheriffProfile
+    SheriffProfile,
+    LeaveTypeCode,
+    LeaveCancelCode
 } from '../Api';
 import {
     sheriffList,
@@ -65,6 +67,12 @@ function getAssignmentTitle(assignment: Partial<Assignment>): string {
 }
 
 export default class MockClient implements API {
+    getLeaveTypes(): Promise<LeaveTypeCode[]> {
+        throw new Error("Method not implemented.");
+    }
+    getLeaveCancelCodes(): Promise<LeaveCancelCode[]> {
+        throw new Error("Method not implemented.");
+    }
     createLeave(newLeave: Partial<Leave>): Promise<Leave> {
         throw new Error("Method not implemented.");
     }

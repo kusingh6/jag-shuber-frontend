@@ -25,7 +25,9 @@ import {
     ShiftUpdates,
     SheriffRank,
     DateRange,
-    SheriffProfile
+    SheriffProfile,
+    LeaveTypeCode,
+    LeaveCancelCode
 } from './Api';
 import MockApi from './Mock/MockApi';
 import { SubmissionError } from 'redux-form';
@@ -293,6 +295,14 @@ export default class Client implements API {
     }
 
     updateLeave(updatedLeave: Leave): Promise<Leave> {
+        throw new Error("Method not implemented.");
+    }
+
+    getLeaveTypes(): Promise<LeaveTypeCode[]> {
+        throw new Error("Method not implemented.");
+    }
+    
+    getLeaveCancelCodes(): Promise<LeaveCancelCode[]> {
         throw new Error("Method not implemented.");
     }
 
