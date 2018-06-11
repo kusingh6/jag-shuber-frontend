@@ -39,7 +39,7 @@ interface DutyRosterTimelineProps extends TimelineProps {
 
 interface DutyRosterTimelineDispatchProps {
     fetchAssignmentDuties: (dateRange: DateRange) => void;
-    fetchAssignments: (dateRange:DateRange) => void;
+    fetchAssignments: (dateRange: DateRange) => void;
     linkSheriff: (link: { sheriffId: IdType, dutyId: IdType, sheriffDutyId: IdType }) => void;
     fetchAssignmentDutyDetails: () => void;
     showAssignmentDutyEditModal: (id: IdType) => void;
@@ -75,7 +75,12 @@ class DutyRosterTimeline extends React.Component<CompositeProps> {
 
     componentWillReceiveProps(nextProps: CompositeProps) {
         const { visibleTimeStart: prevStartDate, visibleTimeEnd: prevEndDate } = this.props;
-        const { visibleTimeStart: nextStartDate, visibleTimeEnd: nextEndDate, fetchAssignmentDuties, fetchAssignments } = nextProps;
+        const { 
+            visibleTimeStart: nextStartDate, 
+            visibleTimeEnd: nextEndDate, 
+            fetchAssignmentDuties, 
+            fetchAssignments 
+        } = nextProps;
 
         if (!moment(prevStartDate).isSame(moment(nextStartDate)) || !moment(prevEndDate).isSame(moment(nextEndDate))) {
             const dateRange = { startDate: nextStartDate, endDate: nextEndDate };
