@@ -86,7 +86,12 @@ node{
         
         try{
           echo "Building: " + ARTIFACT_BUILD
-          openshiftBuild bldCfg: ARTIFACT_BUILD, showBuildLogs: 'true', waitTime: '900000'
+          openshiftBuild bldCfg: ARTIFACT_BUILD, showBuildLogs: 'true'
+        
+          // the RUNTIME_BUILD should be triggered by the build above, but manually starting to match BCdevops 
+          echo "Assembling Runtime: " + RUNTIME_BUILD
+          openshiftBuild bldCfg: RUNTIME_BUILD, showBuildLogs: 'true'
+          //Verify ARTIFACT_BUILD & RUNTIME_BUILD
           openshiftVerifyBuild bldCfg: ARTIFACT_BUILD, showBuildLogs: 'true', waitTime: '900000'
           openshiftVerifyBuild bldCfg: RUNTIME_BUILD, showBuildLogs: 'true', waitTime: '900000'
           // openshiftVerifyBuild bldCfg: YARN_BUILD, showBuildLogs: 'true', waitTime: '900000'
