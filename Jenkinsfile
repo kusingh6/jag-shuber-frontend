@@ -24,7 +24,7 @@ def YARN_BUILD = 'yarn-builder'
 def IMAGESTREAM_NAME = APP_NAME
 def SLACK_DEV_CHANNEL="kulpreet_test"
 def SLACK_MAIN_CHANNEL="kulpreet_test"
-
+def work_space="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/jag-shuber-tools-frontend-pipeline/workspace@script"
 def hasRepoChanged = false;
 node{
   def lastCommit = getLastCommit()
