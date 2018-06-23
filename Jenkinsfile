@@ -275,7 +275,7 @@ node{
       openshiftDeploy deploymentConfig: "${newTarget}", namespace: environment, waitTime: '900000'
       openshiftVerifyDeployment deploymentConfig: "${newTarget}", namespace: environment, waitTime: '900000'
       slackNotify(
-          "Current production deployment mapped to ${currentTarget}"
+          "Current production deployment mapped to ${currentTarget}",
           "New Version in ${environment} is ${newTarget}🚀",
           "A new version of the ${newTarget} is now in ${environment}",
           'To switch to new version',
