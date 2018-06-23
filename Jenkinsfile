@@ -99,7 +99,7 @@ node{
           // Don't tag with BUILD_ID so the pruner can do it's job; it won't delete tagged images.
           // Tag the images for deployment based on the image's hash
           IMAGE_HASH = sh (
-          script: """oc get istag ${RUNTIME_BUILD}:latest | grep sha256: | awk -F "sha256:" '{print \$3 }'""",
+          script: """oc get istag ${IMAGESTREAM_NAME}:latest | grep sha256: | awk -F "sha256:" '{print \$3 }'""",
           returnStdout: true).trim()
           echo ">> IMAGE_HASH: ${IMAGE_HASH}"
           // if ( IMAGE_HASH:
