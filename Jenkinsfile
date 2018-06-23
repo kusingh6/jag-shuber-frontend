@@ -334,7 +334,7 @@ node{
   //     currentBuild.result = 'SUCCESS'
   //   }
   // }
-}
+
 // // Functions to check currentTarget (api-blue)deployment and mark to for deployment to newTarget(api-green) & vice versa
   def getCurrentTarget() {
   def currentTarget = readFile("${workspace}/route-target")
