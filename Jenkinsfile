@@ -272,7 +272,7 @@ node{
       try {
       // Check for current route target
       ROUT_CHK = sh (
-      script: """oc project jag-shuber-prod; if [ `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.to.weight}'` == "100" ]; then `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.to.name}'` > ${work_space}/route-target; else `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.alternateBackend[*].name}'` > ${work_space}/route-target; fi ; cat ${work_space}/route-target""")
+      script: """oc project jag-shuber-prod; if [ `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.to.weight}'` == "100" ]; then `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.to.name}' > ${work_space}/route-target`; else `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.alternateBackend[*].name}' > ${work_space}/route-target`; fi ; cat ${work_space}/route-target""")
       // echo ">> ROUT_CHK: ${ROUT_CHK}"
       // Tag the new build as "prod"
       openshiftTag destStream: "${newTarget}", verbose: 'true', destTag: environment, srcStream: IMAGESTREAM_NAME, srcTag: "${IMAGE_HASH}", waitTime: '900000'
