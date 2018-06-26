@@ -10,7 +10,7 @@ def TAG_NAMES = [
   'prod'
 ]
 def APP_URLS = [
-  "https://${APP_NAME}-${PROJECT_PREFIX}-${TAG_NAMES[0]}.${PATHFINDER_URL}"
+  "https://${APP_NAME_F}-${PROJECT_PREFIX}-${TAG_NAMES[0]}.${PATHFINDER_URL}"
 ]
 
 // You shouldn't have to edit these if you're following the convention
