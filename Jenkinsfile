@@ -291,7 +291,7 @@ node{
                 type: "button",            
                 text: "switch route to new version on ${newTarget}?",
                 style: "primary",              
-                url: "${handle}/input"
+                url: "build job: 'Jag-shuber-prod-deploy'/input"
               ]
             ])
     }catch(error){
