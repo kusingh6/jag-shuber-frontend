@@ -316,8 +316,6 @@ node{
 
   // Once approved (input step) switch production over to the new version.
   stage('Switch over to new production stack') {
-    def newTarget = getNewTarget()
-    def currentTarget = getCurrentTarget()
     // Wait for administrator confirmation
     timeout(time:3, unit: 'DAYS'){ input "Switch Production from ${currentTarget} to ${newTarget} ?"}
     node{
