@@ -104,7 +104,7 @@ def work_space="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/Jag-shuber-prod-depl
   def getCurrentTarget() {
   //def input = readFile("${work_space}/route-target") 
   currentTarget = sh (
-      script: """cat \${workspace}/route-target | awk -F"-" '{print \$2}' """)
+      script: """cat ${workspace}/route-target | awk -F"-" '{print \$2}' """)
       // echo ">> ROUT_CHK: ${ROUT_CHK}"
   return currentTarget
   }
