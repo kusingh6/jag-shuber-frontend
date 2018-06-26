@@ -30,7 +30,7 @@ def work_space="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/Jag-shuber-prod-depl
       
       try {
       ROUT_CHK = sh (
-      script: """oc project jag-shuber-prod; if [ `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.to.weight}'` == "100" ]; then `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.to.name}'` > ${work_space}/route_target; else `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.alternateBackend[*].name}'` > ${work_space}/route_target; fi ; cat ${work_space}/route-target""")
+      script: """oc project jag-shuber-prod; if [ `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.to.weight}'` == "100" ]; then `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.to.name}'` > ${workspace}/route_target; else `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.alternateBackend[*].name}'` > ${workspace}/route_target; fi ; cat ${workspace}/route-target""")
       echo ">> ROUT_CHK: ${ROUT_CHK}"
       // Deploy Fontend Image to the production environment
       openshiftDeploy deploymentConfig: APP_NAME_F+"-${newTarget}", namespace: "${PROJECT_PREFIX}"+"-"+environment, waitTime: '900000'
@@ -102,11 +102,12 @@ def work_space="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/Jag-shuber-prod-depl
 
 // // Functions to check currentTarget (api-blue)deployment and mark to for deployment to newTarget(api-green) & vice versa
   def getCurrentTarget() {
+
   //def input = readFile("${work_space}/route-target") 
-  currentTarget = sh (
-      script: """cat ${work_space}/route-target | awk -F"-" '{print \$2}' """)
+    currentTarget = sh (
+      script: """cat ${workspace}/route-target | awk -F"-" '{print \$2}' """)
       // echo ">> ROUT_CHK: ${ROUT_CHK}"
-  return currentTarget
+    return currentTarget
   }
 
   def getNewTarget() {
