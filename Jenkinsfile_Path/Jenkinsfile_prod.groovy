@@ -25,6 +25,8 @@ def work_space="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/Jag-shuber-prod-depl
   stage('Deploy ' + TAG_NAMES[0]){
     def environment = TAG_NAMES[0]
     def url = APP_URLS[0]
+    def newTarget = getNewTarget()
+    def currentTarget = getCurrentTarget()
     timeout(time:3, unit: 'DAYS'){ input "Deploy to ${environment}?"}
     node{
       
@@ -33,12 +35,12 @@ def work_space="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/Jag-shuber-prod-depl
       script: """oc project jag-shuber-prod; if [ `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.to.weight}'` == "100" ]; then `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.to.name}' > ${workspace}/route-target`; else `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.alternateBackend[*].name}' > ${workspace}/route-target`; fi""")
       echo ">> ROUT_CHK: ${ROUT_CHK}"
       // Deploy Fontend Image to the production environment
-      openshiftDeploy deploymentConfig: APP_NAME_F+"-${newTarget}", namespace: "${PROJECT_PREFIX}"+"-"+environment, waitTime: '900000'
-      openshiftVerifyDeployment deploymentConfig: APP_NAME_F+"${newTarget}", namespace: "${PROJECT_PREFIX}"+"-"+environment, waitTime: '900000'
+      openshiftDeploy deploymentConfig: APP_NAME_F+"-"+newTarget, namespace: "${PROJECT_PREFIX}"+"-"+environment, waitTime: '900000'
+      openshiftVerifyDeployment deploymentConfig: APP_NAME_F+"-"+newTarget, namespace: "${PROJECT_PREFIX}"+"-"+environment, waitTime: '900000'
 
       //Deploy API Image to the production environment
-      openshiftDeploy deploymentConfig: APP_NAME_A+"-${newTarget}", namespace: "${PROJECT_PREFIX}"+"-"+environment, waitTime: '900000'
-      openshiftVerifyDeployment deploymentConfig: APP_NAME_A+"${newTarget}", namespace: "${PROJECT_PREFIX}"+"-"+environment, waitTime: '900000'
+      openshiftDeploy deploymentConfig: APP_NAME_A+"-"+newTarget, namespace: "${PROJECT_PREFIX}"+"-"+environment, waitTime: '900000'
+      openshiftVerifyDeployment deploymentConfig: APP_NAME_A+"-"+newTarget, namespace: "${PROJECT_PREFIX}"+"-"+environment, waitTime: '900000'
 
       slackNotify(
           "Current production stack mapped to ${currentTarget}",
