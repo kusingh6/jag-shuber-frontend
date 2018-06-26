@@ -31,7 +31,7 @@ def work_space="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/Jag-shuber-prod-depl
       try {
       ROUT_CHK = sh (
       script: """oc project jag-shuber-prod; if [ `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.to.weight}'` == "100" ]; then `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.to.name}'` > ${work_space}/route_target; else `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.alternateBackend[*].name}'` > ${work_space}/route_target; fi ; cat ${work_space}/route-target""")
-      // echo ">> ROUT_CHK: ${ROUT_CHK}"
+      echo ">> ROUT_CHK: ${ROUT_CHK}"
       // Deploy Fontend Image to the production environment
       openshiftDeploy deploymentConfig: APP_NAME_F+"-${newTarget}", namespace: "${PROJECT_PREFIX}"+"-"+environment, waitTime: '900000'
       openshiftVerifyDeployment deploymentConfig: APP_NAME_F+"${newTarget}", namespace: "${PROJECT_PREFIX}"+"-"+environment, waitTime: '900000'
