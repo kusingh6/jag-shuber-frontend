@@ -291,7 +291,7 @@ node{
                 type: "button",            
                 text: "switch route to new version on ${newTarget}?",
                 style: "primary",              
-                url: "build job: 'Jag-shuber-prod-deploy'/input"
+                url: "${currentBuild.absoluteUrl}/console"
               ]
             ])
     }catch(error){
@@ -314,26 +314,24 @@ node{
   }
   }
 
-  // // Once approved (input step) switch production over to the new version.
-  // stage('Switch over to new Version') {
-  //   def newTarget = getNewTarget()
-  //   def currentTarget = getCurrentTarget()
-  //   // Wait for administrator confirmation
-  //   timeout(time:3, unit: 'DAYS'){ input "Switch Production from ${currentTarget} to ${newTarget} ?"}
-  //   node{
-  //     try{
+  // Once approved (input step) switch production over to the new version.
+  stage('Switch over to new production stack') {
+    def newTarget = getNewTarget()
+    def currentTarget = getCurrentTarget()
+    // Wait for administrator confirmation
+    timeout(time:3, unit: 'DAYS'){ input "Switch Production from ${currentTarget} to ${newTarget} ?"}
+    node{
+      try{
         
-  //       // Switch blue/green
-  //       ROUT_PATCH = sh(
-  //       script: """oc project jag-shuber-prod; oc set route-backends sheriff-scheduling-prod ${currentTarget}=0 ${newTarget}=100;""")
-  //       echo ">> ROUT_PATCH: ${ROUT_PATCH}"
-  //     }catch(error){
-  //       echo "Failed to switch route"
-  //       throw error
-  //     }
-  // }
-  // }
-
+      //Trigger remote job
+      def handle = build job: 'Jag-shuber-prod-deploy'
+    
+      }catch(error){
+        echo "Failed to switch route"
+        throw error
+      }
+  }
+  }
   // }else{
   //   stage('No Changes to Build 👍'){
   //     currentBuild.result = 'SUCCESS'
