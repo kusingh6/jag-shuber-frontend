@@ -18,7 +18,7 @@ def FRONTEND_IMAGESTREAM_NAME = APP_NAME_F
 def API_IMAGESTREAM_NAME = APP_NAME_A
 def SLACK_DEV_CHANNEL="kulpreet_test"
 def SLACK_MAIN_CHANNEL="kulpreet_test"
-def work_space="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/Jag-shuber-prod-deploy"
+def work_space="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/Jag-shuber-prod-deploy/workspace"
 
 
   // Deploying to production
