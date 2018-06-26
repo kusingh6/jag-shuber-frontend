@@ -128,12 +128,12 @@ node{
   
 
   // Creating Emphemeral post-gress instance for testing
-  stage('Postgress Emphemeral Image'){
+  stage('Emphemeral Test Environment'){
     node{
       try{
         echo "Creating Ephemeral Postgress instance for testing"
         POSTGRESS = sh (
-          script: """oc project jag-shuber-tools; oc process -f "${work_space}/openshift/posgress-ephemeral.json" | oc create -f - """)
+          script: """oc project jag-shuber-tools; oc process -f "${work_space}/openshift/test/frontend-deploy.json" | oc create -f -; oc process -f "${work_space}/openshift/test/api-postgress-ephemeral.json" | oc create -f - """)
           echo ">> POSTGRESS: ${POSTGRESS}" 
         
       } catch(error){
@@ -150,7 +150,7 @@ node{
     try{
       echo "Run Test Case scripts here"
       POSTGRESS_DEL = sh (
-        script: """oc project jag-shuber-tools; oc process -f "${work_space}/openshift/posgress-ephemeral.json" | oc delete -f - """)
+        script: """oc project jag-shuber-tools; oc process -f "${work_space}/openshift/test/frontend-deploy.json" | oc delete -f -; oc process -f "${work_space}/openshift/test/api-postgress-ephemeral.json" | oc delete -f - """)
         echo ">> ${POSTGRESS_DEL}"
       echo "postgress instance deleted successfully"
     } catch(error){
