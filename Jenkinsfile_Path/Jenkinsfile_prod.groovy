@@ -18,7 +18,7 @@ def FRONTEND_IMAGESTREAM_NAME = APP_NAME_F
 def API_IMAGESTREAM_NAME = APP_NAME_A
 def SLACK_DEV_CHANNEL="kulpreet_test"
 def SLACK_MAIN_CHANNEL="kulpreet_test"
-def work_space="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/Jag-shuber-prod-deploy/"
+def work_space="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/Jag-shuber-prod-deploy"
 
 
   // Deploying to production
@@ -104,7 +104,7 @@ def work_space="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/Jag-shuber-prod-depl
   def getCurrentTarget() {
   //def input = readFile("${work_space}/route-target") 
   currentTarget = sh (
-      script: """cat ${workspace}/route-target | awk -F"-" '{print \$2}' """)
+      script: """cat ${work_space}/route-target | awk -F"-" '{print \$2}' """)
       // echo ">> ROUT_CHK: ${ROUT_CHK}"
   return currentTarget
   }
