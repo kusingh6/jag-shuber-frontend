@@ -22,9 +22,9 @@ def work_space="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/Jag-shuber-prod-depl
 
 
   // Deploying to production
-  stage('Deploy ' + TAG_NAMES[2]){
-    def environment = TAG_NAMES[2]
-    def url = APP_URLS[2]
+  stage('Deploy ' + TAG_NAMES[0]){
+    def environment = TAG_NAMES[0]
+    def url = APP_URLS[0]
     timeout(time:3, unit: 'DAYS'){ input "Deploy to ${environment}?"}
     node{
       
