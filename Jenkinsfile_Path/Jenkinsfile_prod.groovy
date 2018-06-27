@@ -30,6 +30,27 @@ def new_Target = "${newTarget}"
       echo "New target is ${new_Target} and ${newTarget}"
       echo "Current target is ${currentTarget} "
 
+      // // Functions to check currentTarget (api-blue)deployment and mark to for deployment to newTarget(api-green) & vice versa
+      def getCurrentTarget() {
+      currentTarget = sh (
+        script: """cat route-target | awk -F"-" '{print \$2}' """)
+        // echo ">> ROUT_CHK: ${ROUT_CHK}"
+        return currentTarget
+      }
+
+      def getNewTarget() {
+      def currentTarget = getCurrentTarget()
+      def newTarget = ""
+      if (currentTarget == 'blue') {
+        newTarget = 'green'
+      } else if (currentTarget == 'green') {
+        newTarget = 'blue'
+      } else {
+        echo "OOPS, wrong target"
+      }
+      return newTarget
+      }
+
     }
   }
   // // Deploying to production
@@ -106,23 +127,5 @@ def new_Target = "${newTarget}"
   //   }
   // }
 
-// // Functions to check currentTarget (api-blue)deployment and mark to for deployment to newTarget(api-green) & vice versa
-  def getCurrentTarget() {
-    currentTarget = sh (
-      script: """cat route-target | awk -F"-" '{print \$2}' """)
-      // echo ">> ROUT_CHK: ${ROUT_CHK}"
-    return currentTarget
-  }
 
-  def getNewTarget() {
-  def currentTarget = getCurrentTarget()
-  def newTarget = ""
-  if (currentTarget == 'blue') {
-      newTarget = 'green'
-  } else if (currentTarget == 'green') {
-      newTarget = 'blue'
-  } else {
-    echo "OOPS, wrong target"
-  }
-  return newTarget
-  }
+  
