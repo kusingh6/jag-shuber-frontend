@@ -21,17 +21,7 @@ def SLACK_MAIN_CHANNEL="kulpreet_test"
 def route_path="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/Jag-shuber-prod-deploy"
 def new_Target = "${newTarget}"
 
-  stage('Check for targets') {
-    node{
-      try{
-      ROUT_CHK = sh (
-      script: """oc project jag-shuber-prod; if [ `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.to.weight}'` == "100" ]; then `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.to.name}' > route-target`; else `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.alternateBackend[*].name}' > route-target`; fi""")
-      echo ">> ROUT_CHK: ${ROUT_CHK}"
-
-      echo "New target is ${new_Target} and ${newTarget}"
-      echo "Current target is ${currentTarget} "
-
-      // // Functions to check currentTarget (api-blue)deployment and mark to for deployment to newTarget(api-green) & vice versa
+// // Functions to check currentTarget (api-blue)deployment and mark to for deployment to newTarget(api-green) & vice versa
       def getCurrentTarget() {
       currentTarget = sh (
         script: """cat route-target | awk -F"-" '{print \$2}' """)
@@ -51,6 +41,17 @@ def new_Target = "${newTarget}"
       }
       return newTarget
       }
+
+      
+  stage('Check for targets') {
+    node{
+      try{
+      ROUT_CHK = sh (
+      script: """oc project jag-shuber-prod; if [ `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.to.weight}'` == "100" ]; then `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.to.name}' > route-target`; else `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.alternateBackend[*].name}' > route-target`; fi""")
+      echo ">> ROUT_CHK: ${ROUT_CHK}"
+
+      echo "New target is ${new_Target} and ${newTarget}"
+      echo "Current target is ${currentTarget} "
       } catch(error){
         echo "Failed to switch route"
         throw error
