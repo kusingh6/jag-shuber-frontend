@@ -266,8 +266,6 @@ node{
   stage('Tag Image to ' + TAG_NAMES[2]){
     def environment = TAG_NAMES[2]
     def url = APP_URLS[2]
-    def newTarget = getNewTarget()
-    def currentTarget = getCurrentTarget()
     timeout(time:3, unit: 'DAYS'){ input "Deploy to ${environment}?"}
     node{
       
@@ -318,8 +316,6 @@ node{
 
   // Once approved (input step) switch production over to the new version.
   stage('Switch over to new production stack') {
-    def newTarget = getNewTarget()
-    def currentTarget = getCurrentTarget()
     // Wait for administrator confirmation
     timeout(time:3, unit: 'DAYS'){ input "Switch Production stack?"}
     node{
