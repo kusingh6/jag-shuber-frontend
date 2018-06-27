@@ -27,18 +27,17 @@ def route_path="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/Jag-shuber-prod-depl
     def url = APP_URLS[0]
     timeout(time:3, unit: 'DAYS'){ input "Deploy to ${environment}?"}
     node{
-      
       try {
       ROUT_CHK = sh (
       script: """oc project jag-shuber-prod; if [ `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.to.weight}'` == "100" ]; then `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.to.name}' > route-target`; else `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.alternateBackend[*].name}' > route-target`; fi""")
       echo ">> ROUT_CHK: ${ROUT_CHK}"
       // Deploy Fontend Image to the production environment
-      openshiftDeploy deploymentConfig: APP_NAME_F+"-"+newTarget, namespace: "${PROJECT_PREFIX}"+"-"+environment, waitTime: '900000'
-      openshiftVerifyDeployment deploymentConfig: APP_NAME_F+"-"+newTarget, namespace: "${PROJECT_PREFIX}"+"-"+environment, waitTime: '900000'
+      openshiftDeploy deploymentConfig: APP_NAME_F+"-"+"${newTarget}", namespace: "${PROJECT_PREFIX}"+"-"+environment, waitTime: '900000'
+      openshiftVerifyDeployment deploymentConfig: APP_NAME_F+"-"+"${newTarget}", namespace: "${PROJECT_PREFIX}"+"-"+environment, waitTime: '900000'
 
       //Deploy API Image to the production environment
-      openshiftDeploy deploymentConfig: APP_NAME_A+"-"+newTarget, namespace: "${PROJECT_PREFIX}"+"-"+environment, waitTime: '900000'
-      openshiftVerifyDeployment deploymentConfig: APP_NAME_A+"-"+newTarget, namespace: "${PROJECT_PREFIX}"+"-"+environment, waitTime: '900000'
+      openshiftDeploy deploymentConfig: APP_NAME_A+"-"+"${newTarget}", namespace: "${PROJECT_PREFIX}"+"-"+environment, waitTime: '900000'
+      openshiftVerifyDeployment deploymentConfig: APP_NAME_A+"-"+"${newTarget}", namespace: "${PROJECT_PREFIX}"+"-"+environment, waitTime: '900000'
 
       slackNotify(
           "Current production stack mapped to ${currentTarget}",
@@ -76,8 +75,6 @@ def route_path="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/Jag-shuber-prod-depl
 
   // Once approved (input step) switch production over to the new version.
   stage('Switch over to new Version') {
-    def newTarget = getNewTarget()
-    def currentTarget = getCurrentTarget()
     // Wait for administrator confirmation
     timeout(time:3, unit: 'DAYS'){ input "Switch Production from ${currentTarget} stack to ${newTarget} stack?"}
     node{
@@ -102,8 +99,6 @@ def route_path="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/Jag-shuber-prod-depl
 
 // // Functions to check currentTarget (api-blue)deployment and mark to for deployment to newTarget(api-green) & vice versa
   def getCurrentTarget() {
-
-  //def input = readFile("${work_space}/route-target") 
     currentTarget = sh (
       script: """cat route-target | awk -F"-" '{print \$2}' """)
       // echo ">> ROUT_CHK: ${ROUT_CHK}"
