@@ -19,7 +19,7 @@ def API_IMAGESTREAM_NAME = APP_NAME_A
 def SLACK_DEV_CHANNEL="kulpreet_test"
 def SLACK_MAIN_CHANNEL="kulpreet_test"
 def route_path="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/Jag-shuber-prod-deploy"
-def new_Target = newTarget
+def new_Target = "${newTarget}"
 
   stage('Check for targets') {
     node{
