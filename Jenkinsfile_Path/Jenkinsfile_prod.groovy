@@ -19,7 +19,7 @@ def API_IMAGESTREAM_NAME = APP_NAME_A
 def SLACK_DEV_CHANNEL="kulpreet_test"
 def SLACK_MAIN_CHANNEL="kulpreet_test"
 def route_path="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/Jag-shuber-prod-deploy"
-
+def new_Target = newTarget
 
   // Deploying to production
   stage('Deploy ' + TAG_NAMES[0]){
@@ -32,12 +32,12 @@ def route_path="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/Jag-shuber-prod-depl
       script: """oc project jag-shuber-prod; if [ `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.to.weight}'` == "100" ]; then `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.to.name}' > route-target`; else `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.alternateBackend[*].name}' > route-target`; fi""")
       echo ">> ROUT_CHK: ${ROUT_CHK}"
       // Deploy Fontend Image to the production environment
-      openshiftDeploy deploymentConfig: APP_NAME_F+"-"+"${newTarget}", namespace: "${PROJECT_PREFIX}"+"-"+environment, waitTime: '900000'
-      openshiftVerifyDeployment deploymentConfig: APP_NAME_F+"-"+"${newTarget}", namespace: "${PROJECT_PREFIX}"+"-"+environment, waitTime: '900000'
+      openshiftDeploy deploymentConfig: APP_NAME_F+"-"+new_Target, namespace: "${PROJECT_PREFIX}"+"-"+environment, waitTime: '900000'
+      openshiftVerifyDeployment deploymentConfig: APP_NAME_F+"-"+new_Target, namespace: "${PROJECT_PREFIX}"+"-"+environment, waitTime: '900000'
 
       //Deploy API Image to the production environment
-      openshiftDeploy deploymentConfig: APP_NAME_A+"-"+"${newTarget}", namespace: "${PROJECT_PREFIX}"+"-"+environment, waitTime: '900000'
-      openshiftVerifyDeployment deploymentConfig: APP_NAME_A+"-"+"${newTarget}", namespace: "${PROJECT_PREFIX}"+"-"+environment, waitTime: '900000'
+      openshiftDeploy deploymentConfig: APP_NAME_A+"-"+new_Target, namespace: "${PROJECT_PREFIX}"+"-"+environment, waitTime: '900000'
+      openshiftVerifyDeployment deploymentConfig: APP_NAME_A+"-"+new_Target, namespace: "${PROJECT_PREFIX}"+"-"+environment, waitTime: '900000'
 
       slackNotify(
           "Current production stack mapped to ${currentTarget}",
