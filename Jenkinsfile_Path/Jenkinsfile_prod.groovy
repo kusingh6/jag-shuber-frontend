@@ -30,7 +30,7 @@ def route_path="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/Jag-shuber-prod-depl
       
       try {
       ROUT_CHK = sh (
-      script: """oc project jag-shuber-prod; if [ `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.to.weight}'` == "100" ]; then `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.to.name}' > ${route_path}/route-target`; else `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.alternateBackend[*].name}' > ${eroute_path}/route-target`; fi""")
+      script: """oc project jag-shuber-prod; if [ `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.to.weight}'` == "100" ]; then `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.to.name}' > route-target`; else `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.alternateBackend[*].name}' > route-target`; fi""")
       echo ">> ROUT_CHK: ${ROUT_CHK}"
       // Deploy Fontend Image to the production environment
       openshiftDeploy deploymentConfig: APP_NAME_F+"-"+newTarget, namespace: "${PROJECT_PREFIX}"+"-"+environment, waitTime: '900000'
@@ -105,7 +105,7 @@ def route_path="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/Jag-shuber-prod-depl
 
   //def input = readFile("${work_space}/route-target") 
     currentTarget = sh (
-      script: """cat ${route_path}/route-target | awk -F"-" '{print \$2}' """)
+      script: """cat route-target | awk -F"-" '{print \$2}' """)
       // echo ">> ROUT_CHK: ${ROUT_CHK}"
     return currentTarget
   }
