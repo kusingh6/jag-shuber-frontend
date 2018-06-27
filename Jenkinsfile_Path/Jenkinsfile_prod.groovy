@@ -23,6 +23,7 @@ def new_Target = "${newTarget}"
 
   stage('Check for targets') {
     node{
+      try{
       ROUT_CHK = sh (
       script: """oc project jag-shuber-prod; if [ `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.to.weight}'` == "100" ]; then `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.to.name}' > route-target`; else `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.alternateBackend[*].name}' > route-target`; fi""")
       echo ">> ROUT_CHK: ${ROUT_CHK}"
@@ -50,7 +51,11 @@ def new_Target = "${newTarget}"
       }
       return newTarget
       }
-
+      } catch(error){
+        echo "Failed to switch route"
+        throw error
+      }
+    
     }
   }
   // // Deploying to production
