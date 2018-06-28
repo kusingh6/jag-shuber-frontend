@@ -21,22 +21,6 @@ def SLACK_DEV_CHANNEL="kulpreet_test"
 def SLACK_MAIN_CHANNEL="kulpreet_test"
 def route_path="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/Jag-shuber-prod-deploy"
 
-  // stage('Check for targets') {
-  //   node{
-  //     try{
-  //     ROUT_CHK = sh (
-  //     script: """oc project jag-shuber-prod; if [ `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.to.weight}'` == "100" ]; then `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.to.name}' > route-target`; else `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.alternateBackend[*].name}' > route-target`; fi""")
-  //     echo ">> ROUT_CHK: ${ROUT_CHK}"
-
-  //     echo "New target is ${new_Target} and ${newTarget}"
-  //     echo "Current target is ${currentTarget} "
-  //     } catch(error){
-  //       echo "Failed to switch route"
-  //       throw error
-  //     }
-    
-  //   }
-  // }
   // Deploying to production
   stage('Deploy ' + TAG_NAMES[0]){
     def environment = TAG_NAMES[0]
@@ -125,21 +109,23 @@ def route_path="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/Jag-shuber-prod-depl
   // }
 
 // // Functions to check currentTarget (api-blue)deployment and mark to for deployment to newTarget(api-green) & vice versa
-      def getCurrentTarget() {
-      currentTarget = readFile("route-target")
-        return currentTarget
-      }
+node{
+def getCurrentTarget() {
+currentTarget = readFile("route-target")
+return currentTarget
+}
 
-      def getNewTarget() {
-      def currentTarget = getCurrentTarget()
-      def newTarget = ""
-      if (currentTarget == 'rontend-blue') {
-        newTarget = 'frontend-green'
-      } else if (currentTarget == 'frontend-green') {
-        newTarget = 'rontend-blue'
-      } else {
-        echo "OOPS, wrong target"
-      }
-      return newTarget
-      }
+def getNewTarget() {
+def currentTarget = getCurrentTarget()
+def newTarget = ""
+if (currentTarget == 'rontend-blue') {
+  newTarget = 'frontend-green'
+} else if (currentTarget == 'frontend-green') {
+  newTarget = 'rontend-blue'
+} else {
+  echo "OOPS, wrong target"
+  }
+  return newTarget
+ }
+}
   
