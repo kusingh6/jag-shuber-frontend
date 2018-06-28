@@ -21,26 +21,6 @@ def SLACK_DEV_CHANNEL="kulpreet_test"
 def SLACK_MAIN_CHANNEL="kulpreet_test"
 def route_path="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/Jag-shuber-prod-deploy"
 
-// // Functions to check currentTarget (api-blue)deployment and mark to for deployment to newTarget(api-green) & vice versa
-      def getCurrentTarget() {
-      currentTarget = readFile('route-target').trim()
-        return currentTarget
-      }
-
-      def getNewTarget() {
-      def currentTarget = getCurrentTarget()
-      def newTarget = ""
-      if (currentTarget == 'rontend-blue') {
-        newTarget = 'frontend-green'
-      } else if (currentTarget == 'frontend-green') {
-        newTarget = 'rontend-blue'
-      } else {
-        echo "OOPS, wrong target"
-      }
-      return newTarget
-      }
-
-
   // stage('Check for targets') {
   //   node{
   //     try{
@@ -144,5 +124,22 @@ def route_path="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/Jag-shuber-prod-depl
   //   }
   // }
 
+// // Functions to check currentTarget (api-blue)deployment and mark to for deployment to newTarget(api-green) & vice versa
+      def getCurrentTarget() {
+      currentTarget = readFile("route-target")
+        return currentTarget
+      }
 
+      def getNewTarget() {
+      def currentTarget = getCurrentTarget()
+      def newTarget = ""
+      if (currentTarget == 'rontend-blue') {
+        newTarget = 'frontend-green'
+      } else if (currentTarget == 'frontend-green') {
+        newTarget = 'rontend-blue'
+      } else {
+        echo "OOPS, wrong target"
+      }
+      return newTarget
+      }
   
