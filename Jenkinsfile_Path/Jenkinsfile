@@ -36,21 +36,21 @@ def route_path="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/Jag-shuber-prod-depl
 
         if ( "${newTarget}" == 'frontend-blue' ) {
           // Deploy Fontend Image to the production environment
-          openshiftDeploy deploymentConfig: FRONTEND_G, namespace: "${PROJECT_PREFIX}-${environment}", waitTime: '900000'
-          openshiftVerifyDeployment deploymentConfig: FRONTEND_G, namespace: "${PROJECT_PREFIX}-${environment}", waitTime: '900000'
-
-          //Deploy API Image to the production environment
-          openshiftDeploy deploymentConfig: API_G, namespace: "${PROJECT_PREFIX}-${environment}", waitTime: '900000'
-          openshiftVerifyDeployment deploymentConfig: API_G, namespace: "${PROJECT_PREFIX}-${environment}", waitTime: '900000'
-        }
-        else{
-          // Deploy Fontend Image to the production environment
           openshiftDeploy deploymentConfig: FRONTEND_B, namespace: "${PROJECT_PREFIX}-${environment}", waitTime: '900000'
           openshiftVerifyDeployment deploymentConfig: FRONTEND_B, namespace: "${PROJECT_PREFIX}-${environment}", waitTime: '900000'
 
           //Deploy API Image to the production environment
           openshiftDeploy deploymentConfig: API_B, namespace: "${PROJECT_PREFIX}-${environment}", waitTime: '900000'
           openshiftVerifyDeployment deploymentConfig: API_B, namespace: "${PROJECT_PREFIX}-${environment}", waitTime: '900000'
+        }
+        else{
+          // Deploy Fontend Image to the production environment
+          openshiftDeploy deploymentConfig: FRONTEND_G, namespace: "${PROJECT_PREFIX}-${environment}", waitTime: '900000'
+          openshiftVerifyDeployment deploymentConfig: FRONTEND_G, namespace: "${PROJECT_PREFIX}-${environment}", waitTime: '900000'
+
+          //Deploy API Image to the production environment
+          openshiftDeploy deploymentConfig: API_G, namespace: "${PROJECT_PREFIX}-${environment}", waitTime: '900000'
+          openshiftVerifyDeployment deploymentConfig: API_G, namespace: "${PROJECT_PREFIX}-${environment}", waitTime: '900000'
         }
         slackNotify(
           "Current production stack mapped to ${currentTarget}",
