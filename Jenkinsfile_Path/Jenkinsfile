@@ -1,6 +1,7 @@
 @Library('devops-library') _
 
 // Edit your app's name below
+def APP_NAME = 'frontend'
 def FRONTEND_B = 'frontend-blue'
 def FRONTEND_G = 'frontend-green'
 def API_B = 'api-blue'
@@ -12,7 +13,7 @@ def TAG_NAMES = [
   'prod'
 ]
 def APP_URLS = [
-  "https://${newTarget}-${PROJECT_PREFIX}-${TAG_NAMES[0]}.${PATHFINDER_URL}"
+  "https://${APP_NAME}-${PROJECT_PREFIX}-${TAG_NAMES[0]}.${PATHFINDER_URL}"
 ]
 
 
@@ -112,9 +113,7 @@ def route_path="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/Jag-shuber-prod-depl
 // // Functions to check currentTarget (api-blue)deployment and mark to for deployment to newTarget(api-green) & vice versa
 
 def getCurrentTarget() {
-  node{
   def currentTarget = readFile("route-target")
-  }
   return currentTarget
   }
 
