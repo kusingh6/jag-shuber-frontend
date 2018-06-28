@@ -33,6 +33,24 @@ def route_path="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/Jag-shuber-prod-depl
         script: """oc project jag-shuber-prod; if [ `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.to.weight}'` == "100" ]; then `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.to.name}' > ./route-target`; else `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.alternateBackend[*].name}' > ./route-target`; fi""")
         echo ">> ROUT_CHK: ${ROUT_CHK}"
 
+        def getCurrentTarget() {
+          def currentTarget = readFile("route-target")
+          return currentTarget
+        }
+
+        def getNewTarget() {
+          def currentTarget = getCurrentTarget()
+          def newTarget = ""
+          if (currentTarget == 'frontend-blue') {
+            newTarget = 'frontend-green'
+          } else if (currentTarget == 'frontend-green') {
+            newTarget = 'frontend-blue'
+          } else {
+            echo "OOPS, wrong target"
+          }
+          return newTarget
+        }
+
         if ( newTarget == 'frontend-blue' ) {
           // Deploy Fontend Image to the production environment
           openshiftDeploy deploymentConfig: FRONTEND_G, namespace: "${PROJECT_PREFIX}-${environment}", waitTime: '900000'
@@ -110,23 +128,23 @@ def route_path="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/Jag-shuber-prod-depl
   // }
 
 // // Functions to check currentTarget (api-blue)deployment and mark to for deployment to newTarget(api-green) & vice versa
-def getCurrentTarget() {
-  def currentTarget = readFile("route-target")
-  return currentTarget
-  }
+// def getCurrentTarget() {
+//   def currentTarget = readFile("route-target")
+//   return currentTarget
+//   }
 
-  def getNewTarget() {
-  def currentTarget = getCurrentTarget()
-  def newTarget = ""
-  if (currentTarget == 'frontend-blue') {
-      newTarget = 'frontend-green'
-  } else if (currentTarget == 'frontend-green') {
-      newTarget = 'frontend-blue'
-  } else {
-    echo "OOPS, wrong target"
-  }
-  return newTarget
-  }
+//   def getNewTarget() {
+//   def currentTarget = getCurrentTarget()
+//   def newTarget = ""
+//   if (currentTarget == 'frontend-blue') {
+//       newTarget = 'frontend-green'
+//   } else if (currentTarget == 'frontend-green') {
+//       newTarget = 'frontend-blue'
+//   } else {
+//     echo "OOPS, wrong target"
+//   }
+//   return newTarget
+//   }
 
 
   
