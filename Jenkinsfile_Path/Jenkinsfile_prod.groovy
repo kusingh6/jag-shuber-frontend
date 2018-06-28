@@ -30,10 +30,10 @@ def route_path="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/Jag-shuber-prod-depl
       // Checking current targeted route
       try {
         ROUT_CHK = sh (
-        script: """oc project jag-shuber-prod; if [ `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.to.weight}'` == "100" ]; then `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.to.name}' > route-target`; else `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.alternateBackend[*].name}' > route-target`; fi""")
+        script: """oc project jag-shuber-prod; if [ `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.to.weight}'` == "100" ]; then `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.to.name}' > ./route-target`; else `oc get route sheriff-scheduling-prod -o=jsonpath='{.spec.alternateBackend[*].name}' > ./route-target`; fi""")
         echo ">> ROUT_CHK: ${ROUT_CHK}"
 
-        if (newTarget == 'frontend-blue') {
+        if ( newTarget == 'frontend-blue' ) {
           // Deploy Fontend Image to the production environment
           openshiftDeploy deploymentConfig: FRONTEND_G, namespace: "${PROJECT_PREFIX}-${environment}", waitTime: '900000'
           openshiftVerifyDeployment deploymentConfig: FRONTEND_G, namespace: "${PROJECT_PREFIX}-${environment}", waitTime: '900000'
