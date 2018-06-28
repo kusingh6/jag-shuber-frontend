@@ -24,8 +24,8 @@ def new_Target = "${newTarget}"
 // // Functions to check currentTarget (api-blue)deployment and mark to for deployment to newTarget(api-green) & vice versa
       def getCurrentTarget() {
       currentTarget = sh (
-        script: """cat route-target | awk -F"-" '{print \$2}' """)
-        // echo ">> ROUT_CHK: ${ROUT_CHK}"
+        script: """cat route-target | awk -F"-" '{print \$2}'""")
+        echo ">> currentTarget: ${currentTarget}"
         return currentTarget
       }
 
@@ -42,7 +42,7 @@ def new_Target = "${newTarget}"
       return newTarget
       }
 
-      
+
   stage('Check for targets') {
     node{
       try{
