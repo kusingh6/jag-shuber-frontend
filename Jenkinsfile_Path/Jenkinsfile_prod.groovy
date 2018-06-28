@@ -110,24 +110,23 @@ def route_path="/var/lib/jenkins/jobs/jag-shuber-tools/jobs/Jag-shuber-prod-depl
   // }
 
 // // Functions to check currentTarget (api-blue)deployment and mark to for deployment to newTarget(api-green) & vice versa
-node{
 def getCurrentTarget() {
-currentTarget = readFile("route-target")
-return currentTarget
-}
+  def currentTarget = readFile("route-target")
+  return currentTarget
+  }
 
-def getNewTarget() {
-def currentTarget = getCurrentTarget()
-def newTarget = ""
-if (currentTarget == 'rontend-blue') {
-  newTarget = 'frontend-green'
-} else if (currentTarget == 'frontend-green') {
-  newTarget = 'rontend-blue'
-} else {
-  echo "OOPS, wrong target"
+  def getNewTarget() {
+  def currentTarget = getCurrentTarget()
+  def newTarget = ""
+  if (currentTarget == 'frontend-blue') {
+      newTarget = 'frontend-green'
+  } else if (currentTarget == 'frontend-green') {
+      newTarget = 'frontend-blue'
+  } else {
+    echo "OOPS, wrong target"
   }
   return newTarget
- }
-}
+  }
+
 
   
